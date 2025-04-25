@@ -27,7 +27,7 @@ const DrawingCanvas: React.FC<DrawingCanvasProps> = ({ width = 800, height = 600
     ctx.lineWidth = brushSize;
     ctx.lineCap = 'round';
     ctx.strokeStyle = isErasing ? '#ffffff' : brushColor;
-  }, []);
+  }, [brushColor, brushSize, isErasing]);
 
   const startDrawing = (e: React.MouseEvent<HTMLCanvasElement>) => {
     const canvas = canvasRef.current;
