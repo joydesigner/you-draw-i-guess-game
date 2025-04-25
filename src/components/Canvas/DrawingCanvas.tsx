@@ -87,33 +87,61 @@ const DrawingCanvas: React.FC<DrawingCanvasProps> = ({ width = 800, height = 600
 
   return (
     <div className="drawing-container">
-      <div className="toolbar">
-        <label>
-          Brush Size:
+      <div className="toolbar" style={{
+        display: 'flex',
+        gap: '1rem',
+        alignItems: 'center',
+        marginBottom: '1rem',
+        padding: '0.5rem',
+        backgroundColor: '#f5f5f5',
+        borderRadius: '4px'
+      }}>
+        <div className="control-group">
+          <label style={{ marginRight: '0.5rem' }}>Brush Size: {brushSize}</label>
           <input 
             type="range" 
             min="1" 
             max="50" 
             value={brushSize} 
             onChange={(e) => setBrushSize(Number(e.target.value))}
+            style={{ verticalAlign: 'middle' }}
           />
-          {brushSize}
-        </label>
-        <label>
-          Color:
+        </div>
+        <div className="control-group">
+          <label style={{ marginRight: '0.5rem' }}>Color:</label>
           <input 
             type="color" 
             value={brushColor} 
             onChange={(e) => setBrushColor(e.target.value)}
+            style={{ width: '30px', height: '30px' }}
           />
-        </label>
+        </div>
         <button 
           onClick={() => setIsErasing(!isErasing)}
-          style={{ backgroundColor: isErasing ? '#535bf2' : '#646cff' }}
+          style={{
+            padding: '0.5rem 1rem',
+            backgroundColor: isErasing ? '#535bf2' : '#646cff',
+            color: 'white',
+            border: 'none',
+            borderRadius: '4px',
+            cursor: 'pointer'
+          }}
         >
-          {isErasing ? 'Drawing' : 'Eraser'}
+          {isErasing ? 'Switch to Drawing' : 'Switch to Eraser'}
         </button>
-        <button onClick={clearCanvas}>Clear</button>
+        <button 
+          onClick={clearCanvas}
+          style={{
+            padding: '0.5rem 1rem',
+            backgroundColor: '#ff4444',
+            color: 'white',
+            border: 'none',
+            borderRadius: '4px',
+            cursor: 'pointer'
+          }}
+        >
+          Clear Canvas
+        </button>
       </div>
       <canvas
         ref={canvasRef}
