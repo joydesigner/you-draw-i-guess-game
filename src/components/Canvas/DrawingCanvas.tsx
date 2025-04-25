@@ -5,6 +5,7 @@ interface DrawingCanvasProps {
   width?: number;
   height?: number;
   onDraw?: (canvas: HTMLCanvasElement) => void;
+  className?: string;
 }
 
 const DrawingCanvas: React.FC<DrawingCanvasProps> = ({ width = 800, height = 600, onDraw }) => {
