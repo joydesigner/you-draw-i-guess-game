@@ -15,11 +15,7 @@ export const initializeCanvas = (context: CanvasRenderingContext2D): void => {
   context.lineJoin = 'round';
 };
 
-export const drawLine = (
-  context: CanvasRenderingContext2D,
-  start: Point,
-  end: Point
-): void => {
+export const drawLine = (context: CanvasRenderingContext2D, start: Point, end: Point): void => {
   context.beginPath();
   context.moveTo(start.x, start.y);
   context.lineTo(end.x, end.y);

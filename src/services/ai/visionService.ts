@@ -20,7 +20,7 @@ export class VisionService {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${this.apiKey}`
+          Authorization: `Bearer ${this.apiKey}`,
         },
         body: JSON.stringify({
           model: 'gpt-4-vision-preview',
@@ -30,19 +30,19 @@ export class VisionService {
               content: [
                 {
                   type: 'text',
-                  text: 'What is being drawn in this image? Please provide a short, direct answer.'
+                  text: 'What is being drawn in this image? Please provide a short, direct answer.',
                 },
                 {
                   type: 'image_url',
                   image_url: {
-                    url: `data:image/png;base64,${imageBase64}`
-                  }
-                }
-              ]
-            }
+                    url: `data:image/png;base64,${imageBase64}`,
+                  },
+                },
+              ],
+            },
           ],
-          max_tokens: 50
-        })
+          max_tokens: 50,
+        }),
       });
 
       if (!response.ok) {
@@ -52,7 +52,7 @@ export class VisionService {
       const data = await response.json();
       return {
         guess: data.choices[0].message.content,
-        confidence: 0.8 // TODO: Implement confidence scoring
+        confidence: 0.8, // TODO: Implement confidence scoring
       };
     } catch (error) {
       console.error('Error in vision service:', error);
