@@ -1,5 +1,7 @@
 
 .env
+.trae/rules/project_rules.md
+task.md
 # Logs
 logs
 *.log
