@@ -2,12 +2,16 @@ import React from 'react';
 import DrawingCanvas from './components/Canvas/DrawingCanvas';
 import { VisionService } from './services/ai/visionService';
 import { getCanvasAsBase64 } from './utils/canvasUtils';
+import ScoreDisplay from './components/ScoreDisplay';
+import StatusDisplay from './components/StatusDisplay';
 import './App.css';
 
 function App() {
   const [guess, setGuess] = React.useState<string>('');
   const [isGuessing, setIsGuessing] = React.useState(false);
   const [error, setError] = React.useState<string | null>(null);
+  const [score, setScore] = React.useState<number>(0);
+  const [gameStatus, setGameStatus] = React.useState<'Drawing' | 'Guessing' | 'Game Over'>('Drawing');
 
   const visionService = React.useMemo(() => {
     return new VisionService({
@@ -17,11 +21,19 @@ function App() {
 
   const handleGuess = async (canvas: HTMLCanvasElement) => {
     try {
+      setGameStatus('Guessing');
       setIsGuessing(true);
+      const previousGuess = guess;
       setError(null);
       const imageBase64 = getCanvasAsBase64(canvas);
       const response = await visionService.guessDrawing(imageBase64);
       setGuess(response.guess);
+      
+      // Increment score if guess is correct and different from previous guess
+      if (response.guess && response.guess !== previousGuess) {
+        setScore(prevScore => prevScore + 1);
+      }
+      setGameStatus('Drawing');
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to guess drawing');
     } finally {
@@ -31,6 +43,8 @@ function App() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-primary-50 to-primary-100 p-4 md:p-8">
+      <StatusDisplay status={gameStatus} />
+      <ScoreDisplay score={score} />
       <div className="max-w-6xl mx-auto">
         <header className="text-center mb-8">
           <h1 className="text-4xl md:text-5xl font-bold text-primary-900 mb-2">You Draw, I Guess!</h1>
