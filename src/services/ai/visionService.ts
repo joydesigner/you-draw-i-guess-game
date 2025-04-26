@@ -1,10 +1,15 @@
-import { AIGuessResponse } from '../../types/ai';
 
-export interface VisionServiceConfig {
+import { OpenAI } from 'openai';
+
+type VisionServiceConfig = {
   apiKey: string;
   baseURL?: string;
 }
 
+type AIGuessResponse = {
+  guess: string;
+  confidence: number;
+}
 export class VisionService {
   private readonly apiKey: string;
   private readonly baseURL: string;
@@ -16,42 +21,36 @@ export class VisionService {
 
   async guessDrawing(imageBase64: string): Promise<AIGuessResponse> {
     try {
-      const response = await fetch(`${this.baseURL}/v1/chat/completions`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${this.apiKey}`,
-        },
-        body: JSON.stringify({
-          model: 'gpt-4-vision-preview',
-          messages: [
-            {
-              role: 'user',
-              content: [
-                {
-                  type: 'text',
-                  text: 'What is being drawn in this image? Please provide a short, direct answer.',
-                },
-                {
-                  type: 'image_url',
-                  image_url: {
-                    url: `data:image/png;base64,${imageBase64}`,
-                  },
-                },
-              ],
-            },
-          ],
-          max_tokens: 50,
-        }),
+      const openai = new OpenAI({
+        apiKey: this.apiKey,
+        baseURL: this.baseURL,
+        dangerouslyAllowBrowser: true,
       });
 
-      if (!response.ok) {
-        throw new Error(`API request failed: ${response.statusText}`);
-      }
+      const response = await openai.chat.completions.create({
+        model: 'gpt-4',
+        messages: [
+          {
+            role: 'user',
+            content: [
+              {
+                type: 'text',
+                text: 'What is being drawn in this image? Please provide a short, direct answer.',
+              },
+              {
+                type: 'image_url',
+                image_url: {
+                  url: `data:image/png;base64,${imageBase64}`,
+                },
+              },
+            ],
+          },
+        ],
+        max_tokens: 5000,
+      });
 
-      const data = await response.json();
       return {
-        guess: data.choices[0].message.content,
+        guess: response.choices[0].message.content || '',
         confidence: 0.8, // TODO: Implement confidence scoring
       };
     } catch (error) {
