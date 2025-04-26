@@ -1,7 +1,3 @@
-export interface AIGuessResponse {
-  guess: string;
-  confidence: number;
-}
 
 export interface DrawingData {
   imageData: string;
