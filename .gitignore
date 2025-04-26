@@ -1,25 +1,38 @@
-# Dependencies
-node_modules/
-venv/
-__pycache__/
-*.pyc
 
-# Environment files
 .env
-.env.local
-.env.*.local
-
-# IDE files
-.idea/
-.vscode/
-*.swp
-*.swo
-
-# OS files
-.DS_Store
-Thumbs.db
-
-# Build outputs
-dist/
-build/
+.trae/rules/project_rules.md
+task.md
+# Logs
+logs
 *.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+node_modules
+dist
+dist-ssr
+*.local
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
